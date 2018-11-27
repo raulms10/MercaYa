@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Personas Registradas</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+    </h:head>
+    <h:body onload="#{contactosBean.buscarContactos()}" >
+        <div align="center">        
+            <h1><h:outputText value="Personas Registradas"/></h1>
+            <p><h:outputText value="Si desea eliminar a alguien de su Lista de Contactos debe seleccionarlo y pulsar el botón 'Eliminar'"/></p>
+
+            <h:form id="form" >
+                <p:growl id="message" showDetail="true" />
+
+                <p:dataTable selection="#{contactosBean.contactosSeleccionados}" rowKey="#{contacto.cedula}" var="contacto" value="#{contactosBean.contactos}" id="contactosTable" emptyMessage="No hay personas registradas" paginator="true" rows="8" paginatorAlwaysVisible="true">
+                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                    <p:column headerText="Cédula" sortBy="#{contacto.cedula}">
+                        <h:outputText value="#{contacto.cedula}" />                    
+                    </p:column>
+
+                    <p:column headerText="Nombre completo" sortBy="#{contacto.nombre}">
+                        <h:outputText value="#{contacto.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="Dirección" sortBy="#{contacto.direccion}">
+                        <h:outputText value="#{contacto.direccion}" />
+                    </p:column>
+
+                    <p:column headerText="Teléfono" sortBy="#{contacto.telefono}">
+                        <h:outputText value="#{contacto.telefono}" />
+                    </p:column>
+
+                    <p:column headerText="Correo electrónico" sortBy="#{contacto.correo}">
+                        <h:outputText value="#{contacto.correo}" />
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton styleClass="botones" process="contactosTable" update="@form" icon="ui-icon-close" value="Eliminar" actionListener="#{contactosBean.borrarContacto()}" >
+                            <p:confirm header="Se eliminarán la(s) persona(s) seleccionada(s)" message="Desea continuar?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </f:facet>
+
+                </p:dataTable>
+
+                <p:commandButton styleClass="botones" id="btnHome_List" value="Regresar" action="goHome" icon="ui-icon-home" />
+                <p:commandButton styleClass="botones" id="btnAdd_List" value="Registrar Persona" action="goAdd" icon="ui-icon-plus" /> 
+
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+
+                    <p:commandButton icon="ui-icon-check" actionListener="#{contactosBean.buscarContactos()}" value="Sí" type="button" styleClass="ui-confirmdialog-yes"/>
+                    <p:commandButton icon="ui-icon-cancel" value="No" type="button" styleClass="ui-confirmdialog-no"/>
+
+                </p:confirmDialog>
+            </h:form>
+
+            <p><h:outputText styleClass="text" value="Universidad de Antioquia"/></p>
+        </div>
+    </h:body>
+</html>
