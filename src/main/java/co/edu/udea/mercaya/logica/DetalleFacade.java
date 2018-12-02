@@ -37,7 +37,7 @@ public class DetalleFacade extends AbstractFacade<Detalle> implements DetalleFac
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder(); 
         javax.persistence.criteria.CriteriaQuery cq = cb.createQuery();
         //Definimos de donde vamos a sacar los datos (FROM ontactos)
-        Root rootTable = cq.from(DetallePK.class);
+        Root rootTable = cq.from(Detalle.class);
         System.out.println("gaghashgsahsahgashagshagha");
         cq.select(rootTable)
                 //Aplicamos el filtro para sólo traer los activos (WHERE estado = '1')
