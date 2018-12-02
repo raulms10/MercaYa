@@ -24,7 +24,7 @@ public interface DetalleFacadeLocal {
 
     Detalle find(Object id);
 
-    List<Detalle> findAll();
+    List<Detalle> findAll(Integer id);
 
     List<Detalle> findRange(int[] range);
 

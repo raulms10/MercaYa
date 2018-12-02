@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pm="http://primefaces.org/mobile">
+    <h:head>
+        <title> Factura </title>
+        <!--<link rel="stylesheet" type="text/css" href="css/style.css" />-->
+    </h:head>
+    <h:body>
+        <div align="center">
+
+            <pm:header title="TabMenu" fixed="true" >
+                <h1><h:outputText value="FACTURA GENERADA POR MERCAYA"/></h1>
+                <p><h:outputText value="A continuación encontrará los detalles de su compra"/></p>
+            </pm:header>
+
+            <p:growl id="growl" showDetail="true" />
+
+            <h1><h:outputText value="CONSULTAR VENTA"/></h1>
+            <p><h:outputText value="Digite el codigo de la venta y pulse el botón 'Buscar Venta'"/></p>
+
+            <h:form prependId="false" >
+
+                <p:panel styleClass="panelAdd">
+                    <h:panelGrid id="grid" columns="1" >
+
+                        <div align="center">
+                            <h:panelGrid columns="1">
+                                <h:outputLabel for="factura" value="Número de venta " style="font-weight:bold"/>
+                                <p:inputText id="factura" label="Número de venta: " value="#{facturaBean.factura}" required="true" placeholder="Digite número">
+                                    <f:attribute name="requiredMessage" value="Por favor digite el numero de su venta"/>
+
+                                    <f:validateLength minimum="1" maximum="11" />
+                                </p:inputText>
+                            </h:panelGrid>
+                            <p:message for="factura"/>
+
+                            <p:commandButton styleClass="botones" id="btnSearch" update="@form" value="Buscar Venta" validateClient="true" actionListener="#{facturaBean.buscarVenta()}" icon="ui-icon-disk" />
+                            <p:commandButton styleClass="botones" id="btnSave" update="@form" value="Guardar Venta" validateClient="true" actionListener="#{facturaBean.guardarVenta()}" icon="ui-icon-disk" />
+                        </div>    
+
+                    </h:panelGrid>
+
+                </p:panel>
+
+                <p:panel styleClass="panelResult">
+                    <h:panelGrid id="grid2" columns="2" >
+
+                        <h:panelGrid columns="1">
+                            <div align="center">
+
+                                <h:outputLabel value=" Establecimiento: Merca Ya!!! " style="font-weight:bold"/>
+                                <h:outputLabel value=" NIT: 10292929-4 " style="font-weight:bold"/>
+
+                                <p:dataTable rowKey="#{producto.codigo}" var="producto" value="#{facturaBean.listProductos}" id="contactosTable" emptyMessage="No hay productos registrados" paginator="true" rows="8" paginatorAlwaysVisible="true">
+                                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                    <p:column headerText="Codigo" sortBy="#{producto.codigo}">
+                                        <h:outputText value="#{producto.codigo}" />                    
+                                    </p:column>
+
+                                    <p:column headerText="Nombre" sortBy="#{producto.nombre}">
+                                        <h:outputText value="#{producto.nombre}" />
+                                    </p:column>
+
+                                    <p:column headerText="Valor Unitario" sortBy="#{producto.valorunitario}">
+                                        <h:outputText value="#{producto.valorunitario}" />
+                                    </p:column>
+
+                                    <p:column headerText="Tipo de IVA" sortBy="#{producto.letra}">
+                                        <h:outputText value="#{producto.letra}" />
+                                    </p:column>
+
+                                    <p:column headerText="IVA (%)" sortBy="#{producto.iva}">
+                                        <h:outputText value="#{producto.iva}" />
+                                    </p:column>
+
+                                </p:dataTable>
+
+                                <h:outputLabel value=" Cantidad: " style="font-weight:bold"/>
+                                <h:outputLabel value=" Subtotal: #{facturaBean.ventaSelected.subtotal} " style="font-weight:bold"/>
+                                <h:outputLabel value=" Total: #{facturaBean.ventaSelected.total} " style="font-weight:bold"/>
+                                <h:outputLabel value=" Tipo de pago: #{facturaBean.ventaSelected.tipopago}" style="font-weight:bold"/>
+                                <h:outputLabel value=" Descuento: " style="font-weight:bold"/>
+                                <h:outputLabel value=" Valor pagado: " style="font-weight:bold"/>
+                                <h:outputLabel value=" Articulos comprados: " style="font-weight:bold"/>
+                                <h:outputLabel value=" IVA (Aplicado por producto): " style="font-weight:bold"/>
+                                <h:outputLabel value=" Tarifa: " style="font-weight:bold"/>
+                                <h:outputLabel value=" Base IVA: " style="font-weight:bold"/>
+                                <h:outputLabel value=" Valor de IVA pagado: " style="font-weight:bold"/>
+                                <br></br>
+                                <h:outputLabel value=" MUCHAS GRACIAS POR SU COMPRA " style="font-weight:bold"/>
+                                <h:outputLabel value=" Factura: #{facturaBean.ventaSelected.factura} " style="font-weight:bold"/>
+                                <h:outputLabel value=" Registro DIAN ANTXC0000000000012365410 " style="font-weight:bold"/>
+                                <h:outputLabel value=" Fecha y hora: #{facturaBean.ventaSelected.fecha} " style="font-weight:bold"/>
+                                <h:outputLabel value=" Cajero: #{facturaBean.ventaSelected.cajero} " style="font-weight:bold"/>
+                            </div>
+                        </h:panelGrid>
+
+                    </h:panelGrid>
+
+                </p:panel>                
+
+            </h:form>
+            <h:form prependId="false" >
+                <div align="center">
+                    <p:commandButton styleClass="botones" id="btnHome_Add" value="Regresar" validateClient="false" action="goHome" icon="ui-icon-home" />
+                    <p:commandButton styleClass="botones" id="btnList_Add" value="Consultar Personas" validateClient="false" actionListener="#{contactosBean.buscarContactos()}" action="goList" icon="ui-icon-search" />
+                </div>
+            </h:form>
+            <p><h:outputText styleClass="text" value="Universidad de Antioquia"/></p>
+        </div>
+    </h:body>
+</html>
+
