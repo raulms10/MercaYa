@@ -94,19 +94,19 @@
                             <p:selectOneRadio id="tipopago" value="#{facturaBean.tipoPago}" required="true"
                                 requiredMessage="Debe seleccionar el tipo de Pago">
                                 <f:selectItem itemLabel="Efectivo" itemValue="Efectivo" />
-                                <f:selectItem itemLabel="Tarjeta de Crédito" itemValue="Tarjeta de Crédito" />
+                                <f:selectItem itemLabel="Tarjeta de Crédito" itemValue="Tarjeta" />
                             </p:selectOneRadio>
                         </h:panelGrid>
                     </div>
                     <div align="right">
-                        <p:commandButton styleClass="botones" id="btnShop" update="@form" value="Comprar" validateClient="false" actionListener="#{facturaBean.comprarProductos()}" icon="ui-icon-disk" />
+                        <p:commandButton styleClass="botones" id="btnShop" update="@form" value="Comprar" validateClient="false" action="goFact" actionListener="#{facturaBean.comprarProductos()}" icon="ui-icon-disk" />
                     </div>
                 </p:panel>
             </h:form>
             <h:form prependId="false" >
                 <div align="center">
                     <p:commandButton styleClass="botones" id="btnHome_Add" value="Regresar" validateClient="false" action="goHome" icon="ui-icon-home" />
-                    <p:commandButton styleClass="botones" id="btnList_Add" value="Consultar Personas" validateClient="false" actionListener="#{facturaBean.buscarProductos()}" action="goList" icon="ui-icon-search" />
+                    <p:commandButton styleClass="botones" id="btnList_Add" value="Consultar facturas" validateClient="false" action="goFact" icon="ui-icon-search" />
                 </div>
             </h:form>
             <p><h:outputText styleClass="text" value="Universidad de Antioquia"/></p>

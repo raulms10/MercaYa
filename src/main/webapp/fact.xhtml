@@ -7,9 +7,9 @@
       xmlns:pm="http://primefaces.org/mobile">
     <h:head>
         <title> Factura </title>
-        <!--<link rel="stylesheet" type="text/css" href="css/style.css" />-->
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
     </h:head>
-    <h:body>
+    <h:body onload="#{facturaBean.buscarVenta()}">
         <div align="center">
 
             <pm:header title="TabMenu" fixed="true" >
@@ -27,26 +27,26 @@
                 <p:panel styleClass="panelAdd">
                     <h:panelGrid id="grid" columns="1" >
 
-                        <div align="center">
-                            <h:panelGrid columns="1">
-                                <h:outputLabel for="factura" value="Número de venta " style="font-weight:bold"/>
-                                <p:inputText id="factura" label="Número de venta: " value="#{facturaBean.factura}" required="true" placeholder="Digite número">
-                                    <f:attribute name="requiredMessage" value="Por favor digite el número de su venta"/>
-
-                                    <f:validateLength minimum="1" maximum="11" />
-                                </p:inputText>
+                        <div align="left">
+                            <h:panelGrid columns="2">
+                                <h:panelGrid columns="1">
+                                    <h:outputLabel for="factura" value="Número de venta " style="font-weight:bold"/>
+                                    <p:inputText id="factura" label="Número de venta: " value="#{facturaBean.factura}" required="true" placeholder="Digite número">
+                                        <f:attribute name="requiredMessage" value="Por favor digite el número de su venta"/>
+                                        <f:validateLength minimum="1" maximum="11" />
+                                    </p:inputText>
+                                </h:panelGrid>
+                                <h:panelGrid columns="1">
+                                    <p:message for="factura"/>
+                                    <p:tooltip id="toolTipFact" for="factura" value="Digite el codigo de la venta y pulse el botón 'Buscar Venta'" position="top"/>
+                                    <h:outputLabel for="factura" value="" style="font-weight:bold"/>
+                                    <p:commandButton styleClass="botones" id="btnSearch" update="@form" value="Buscar Venta" validateClient="true" actionListener="#{facturaBean.buscarVenta()}" icon="ui-icon-disk" />
+                                </h:panelGrid>
                             </h:panelGrid>
-                            <p:message for="factura"/>
-
-                            <p:commandButton styleClass="botones" id="btnSearch" update="@form" value="Buscar Venta" validateClient="true" actionListener="#{facturaBean.buscarVenta()}" icon="ui-icon-disk" />
-                            <p:commandButton styleClass="botones" id="btnSave" update="@form" value="Guardar Venta" validateClient="true" actionListener="#{facturaBean.guardarVenta()}" icon="ui-icon-disk" />
-                        </div>    
+                        </div>
 
                     </h:panelGrid>
 
-                </p:panel>
-
-                <p:panel styleClass="panelResult">
                     <h:panelGrid id="grid2" columns="2" >
 
                         <h:panelGrid columns="1">
@@ -57,39 +57,44 @@
 
                                 <p:dataTable rowKey="#{producto.codigo}" var="producto" value="#{facturaBean.listProductos}" id="contactosTable" emptyMessage="No hay productos registrados" paginator="true" rows="8" paginatorAlwaysVisible="true">
                                     <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
-                                    <p:column headerText="Codigo" sortBy="#{producto.codigo}">
+                                    <p:column headerText="Código">
                                         <h:outputText value="#{producto.codigo}" />                    
                                     </p:column>
-
-                                    <p:column headerText="Nombre" sortBy="#{producto.nombre}">
+                                    <!--p:column headerText="Cantidad">
+                                        <h:outputText value="#{producto.cantidad}" />                    
+                                    </p:column-->
+                                    <p:column headerText="Nombre">
                                         <h:outputText value="#{producto.nombre}" />
                                     </p:column>
 
-                                    <p:column headerText="Valor Unitario" sortBy="#{producto.valorunitario}">
+                                    <p:column headerText="Valor Unitario">
                                         <h:outputText value="#{producto.valorunitario}" />
                                     </p:column>
 
-                                    <p:column headerText="Tipo de IVA" sortBy="#{producto.letra}">
+                                    <p:column headerText="IVA (%)">
+                                        <h:outputText value="#{producto.iva}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Tipo de IVA">
                                         <h:outputText value="#{producto.letra}" />
                                     </p:column>
 
-                                    <p:column headerText="IVA (%)" sortBy="#{producto.iva}">
-                                        <h:outputText value="#{producto.iva}" />
-                                    </p:column>
+                                    <!--p:column headerText="Descuento (%)">
+                                        <h:outputText value="#{producto.descuento}" />
+                                    </p:column-->
 
                                 </p:dataTable>
 
-                                <h:outputLabel value=" Cantidad: " style="font-weight:bold"/>
                                 <h:outputLabel value=" Subtotal: #{facturaBean.ventaSelected.subtotal} " style="font-weight:bold"/>
                                 <h:outputLabel value=" Total: #{facturaBean.ventaSelected.total} " style="font-weight:bold"/>
                                 <h:outputLabel value=" Tipo de pago: #{facturaBean.ventaSelected.tipopago}" style="font-weight:bold"/>
-                                <h:outputLabel value=" Descuento: " style="font-weight:bold"/>
-                                <h:outputLabel value=" Valor pagado: " style="font-weight:bold"/>
+                                <h:outputLabel value=" Descuento: #{facturaBean.ventaSelected.total - facturaBean.ventaSelected.totalDesc}" style="font-weight:bold"/>
+                                <h:outputLabel value=" Valor pagado: #{facturaBean.ventaSelected.totalDesc}" style="font-weight:bold"/>
                                 <h:outputLabel value=" Articulos comprados: " style="font-weight:bold"/>
                                 <h:outputLabel value=" IVA (Aplicado por producto): " style="font-weight:bold"/>
                                 <h:outputLabel value=" Tarifa: " style="font-weight:bold"/>
                                 <h:outputLabel value=" Base IVA: " style="font-weight:bold"/>
-                                <h:outputLabel value=" Valor de IVA pagado: " style="font-weight:bold"/>
+                                <h:outputLabel value=" Valor de IVA pagado: #{facturaBean.ventaSelected.total - facturaBean.ventaSelected.subtotal}" style="font-weight:bold"/>
                                 <br></br>
                                 <h:outputLabel value=" MUCHAS GRACIAS POR SU COMPRA " style="font-weight:bold"/>
                                 <h:outputLabel value=" Factura: #{facturaBean.ventaSelected.factura} " style="font-weight:bold"/>
@@ -107,7 +112,7 @@
             <h:form prependId="false" >
                 <div align="center">
                     <p:commandButton styleClass="botones" id="btnHome_Add" value="Regresar" validateClient="false" action="goHome" icon="ui-icon-home" />
-                    <p:commandButton styleClass="botones" id="btnList_Add" value="Consultar Personas" validateClient="false" actionListener="#{contactosBean.buscarContactos()}" action="goList" icon="ui-icon-search" />
+                    <p:commandButton styleClass="botones" id="btnList_Add" value="Ir a comprar" validateClient="false" action="goShop" icon="ui-icon-search" />
                 </div>
             </h:form>
             <p><h:outputText styleClass="text" value="Universidad de Antioquia"/></p>

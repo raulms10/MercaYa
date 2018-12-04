@@ -50,6 +50,7 @@ public class FacturaBean implements Serializable{
     
     private String factura;
     private String producto;
+    private Integer idFactura = 0;
     
     private List<Venta> listVentas;
     private Venta ventaSelected;
@@ -139,14 +140,18 @@ public class FacturaBean implements Serializable{
             Venta venta = new Venta();
             venta.setCajero("Almacenes Merca Ya");
             //Calcular iva
-            Integer id = ventaFacade.lastIdInsert();
-            venta.setFactura(id+1);
+            idFactura = ventaFacade.lastIdInsert();
+            if (idFactura==null){
+                idFactura=0;
+            }
+            factura = idFactura.toString();
+            venta.setFactura(idFactura+1);
             venta.setFecha(new Date());
             venta.setTipopago(tipoPago);
             venta.setSubtotal(0);
             venta.setTotal(0);
             venta.setTotalDesc(0);
-            System.out.println("Iva.... Id: " + id);
+            System.out.println("Iva.... Id: " + idFactura);
             ventaFacade.create(venta);
             Detalle detalleVenta;
             DetallePK detelleVentaPK;
@@ -165,6 +170,7 @@ public class FacturaBean implements Serializable{
             venta.setTotal(venta.getTotal() + venta.getSubtotal());
             venta.setTotalDesc(venta.getTotal() - venta.getTotalDesc());
             ventaFacade.edit(venta);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bien hecho!", "Compra realizada con éxito"));
         }else{
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Nada para comprar", "Debe añadir Productos al carrito"));
         }
@@ -191,20 +197,23 @@ public class FacturaBean implements Serializable{
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha podido buscar a las Personas"));
             return "Error en la búsqueda";
         }
-
-        Integer id = Integer.valueOf(factura);
+        if (factura == null || factura == ""){
+            return "";
+        }
+        try{
+            idFactura = Integer.valueOf(factura);
+        }catch(NumberFormatException e){
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe digitar sólo valores numéricos"));
+            return "";
+        }
         //Hacemos la consulta a la base de datos
-        System.out.println("HGHGAGdfghjkH"+factura);
-        listVentas = this.ventaFacade.findAll(id);
+        System.out.println("HGHGAGdfghjkH "+factura);
+        listVentas = this.ventaFacade.findAll(idFactura);
         ventaSelected = listVentas.get(0);
-        
-        listDetalles = detalleFacade.findAll(id);
-
+        listDetalles = detalleFacade.findAll(idFactura);
         for (Detalle listDetalle : listDetalles) {
             listProductos.add(listDetalle.getProducto1());;
         }
-         
-        
         System.out.println("HGHGAGH"+ventaSelected.getCajero());
         return "Exito al buscar";
     }

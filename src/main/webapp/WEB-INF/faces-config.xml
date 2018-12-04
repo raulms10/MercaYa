@@ -8,43 +8,25 @@
         <managed-bean-class>co.edu.udea.mercaya.controller.FacturaBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-    
     <navigation-rule>
-        <from-view-id>/index.xhtml</from-view-id>
+        <from-view-id>*</from-view-id>
         <navigation-case>
             <from-outcome>toShop</from-outcome>
             <to-view-id>/shop.xhtml</to-view-id>
         </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>/index.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>goList</from-outcome>
-            <to-view-id>/list.xhtml</to-view-id>
-        </navigation-case>
         <navigation-case>
             <from-outcome>goFact</from-outcome>
             <to-view-id>/fact.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goHome</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>refresh</from-outcome>
-            <to-view-id>/index.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>/list.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>goHome</from-outcome>
-            <to-view-id>/index.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>/fact.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>goHome</from-outcome>
             <to-view-id>/index.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
