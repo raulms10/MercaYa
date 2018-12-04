@@ -24,7 +24,7 @@ public interface VentaFacadeLocal {
 
     Venta find(Object id);
 
-    List<Venta> findAll();
+    List<Venta> findAll(Integer id);
 
     List<Venta> findRange(int[] range);
 

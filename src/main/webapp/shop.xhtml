@@ -29,7 +29,7 @@
                         
                         <h:panelGrid id="grid" columns="2" >
                             <h:panelGrid columns="1">
-                                <h:outputLabel for="cantidad" value="Cantidad: " style="font-weight:bold"/>
+                                <h:outputLabel for="cantidad" value="Cantidad: *" style="font-weight:bold"/>
                                 <p:inputText id="cantidad" label="Cantidad" value="#{facturaBean.cantidad}" required="false" placeholder="Número de productos">
                                     <f:attribute name="requiredMessage" value="Por favor digite la cantidad del producto a comprar"/>
                                 </p:inputText>
@@ -37,10 +37,10 @@
                             </h:panelGrid>
 
                             <h:panelGrid columns="1">
-                                <h:outputLabel for="descuento" value="Descuento: " style="font-weight:bold"/>
+                                <h:outputLabel for="descuento" value="Descuento: *" style="font-weight:bold"/>
                                 <p:inputText id="descuento" label="Descuento" value="#{facturaBean.descuento}" required="false" placeholder="Porcentaje de descuento">
                                     <f:attribute name="requiredMessage" value="Por favor digite el descuento del producto a comprar" />
-                                </p:inputText>
+                                  </p:inputText>
                                 <p:message for="descuento" />
                             </h:panelGrid>
                             <h:outputLabel></h:outputLabel>                        

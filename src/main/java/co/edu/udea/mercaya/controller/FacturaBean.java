@@ -10,6 +10,7 @@ import co.edu.udea.mercaya.logica.ProductoFacadeLocal;
 import co.edu.udea.mercaya.logica.VentaFacadeLocal;
 import co.edu.udea.mercaya.model.Detalle;
 import co.edu.udea.mercaya.model.DetallePK;
+import co.edu.udea.mercaya.logica.VentaFacade;
 import co.edu.udea.mercaya.model.Producto;
 import co.edu.udea.mercaya.model.Venta;
 import java.io.Serializable;
@@ -50,6 +51,13 @@ public class FacturaBean implements Serializable{
     private String factura;
     private String producto;
     
+    private List<Venta> listVentas;
+    private Venta ventaSelected;
+    
+    private List<Detalle> listDetalles = new ArrayList<Detalle>();;
+    
+    private List<Producto> listProductos = new ArrayList<Producto>();
+    
     
     /**
      * Creates a new instance of FacturaBean
@@ -58,13 +66,13 @@ public class FacturaBean implements Serializable{
     
     }
     
-    public String guardarProducto(){
-        Producto p = new Producto(11);
-        p.setIva(BigDecimal.valueOf(0));
-        p.setLetra("A");
-        p.setNombre("Papaya");
-        p.setValorunitario(800);
-        productoFacade.create(p);
+    public String guardarVenta(){
+        Venta v = new Venta(90);
+        v.setFecha(new Date());
+        v.setSubtotal(2000);
+        v.setTotal(4000);
+        v.setCajero("aaa");
+        ventaFacade.create(v);
         return "goList";
     }
     
@@ -173,6 +181,33 @@ public class FacturaBean implements Serializable{
         }
         return "";
     }
+        /**
+     * Busca la venta existente en la base de datos. Esta lista queda almacenada en la variabla 'venta'
+     * @return Cadena que indica el estado de la consulta
+     */
+    public String buscarVenta() {
+        FacesContext context = FacesContext.getCurrentInstance(); //Cargamos el contexto para mostrar los mensajes
+        if (this.ventaFacade == null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha podido buscar a las Personas"));
+            return "Error en la búsqueda";
+        }
+
+        Integer id = Integer.valueOf(factura);
+        //Hacemos la consulta a la base de datos
+        System.out.println("HGHGAGdfghjkH"+factura);
+        listVentas = this.ventaFacade.findAll(id);
+        ventaSelected = listVentas.get(0);
+        
+        listDetalles = detalleFacade.findAll(id);
+
+        for (Detalle listDetalle : listDetalles) {
+            listProductos.add(listDetalle.getProducto1());;
+        }
+         
+        
+        System.out.println("HGHGAGH"+ventaSelected.getCajero());
+        return "Exito al buscar";
+    }
 
     public String getFactura() {
         return factura;
@@ -269,5 +304,22 @@ public class FacturaBean implements Serializable{
     public void setDetalleFacade(DetalleFacadeLocal detalleFacade) {
         this.detalleFacade = detalleFacade;
     }
+
+    public Venta getVentaSelected() {
+        return ventaSelected;
+    }
+
+    public void setVentaSelected(Venta ventaSelected) {
+        this.ventaSelected = ventaSelected;
+    }
+
+    public List<Producto> getListProductos() {
+        return listProductos;
+    }
+
+    public void setListProductos(List<Producto> listProductos) {
+        this.listProductos = listProductos;
+    }
+    
     
 }

@@ -52,4 +52,19 @@ public class VentaFacade extends AbstractFacade<Venta> implements VentaFacadeLoc
         return i;
     }
     
+    
+    public List<Venta> findAll(Integer factura) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder(); 
+        javax.persistence.criteria.CriteriaQuery cq = cb.createQuery();
+        //Definimos de donde vamos a sacar los datos (FROM ontactos)
+        Root rootTable = cq.from(Venta.class);
+        System.out.println("gaghashgsahsahgashagshagha");
+        cq.select(rootTable)
+                //Aplicamos el filtro para sólo traer los activos (WHERE estado = '1')
+                .where(cb.equal(rootTable.get("factura"), factura));
+        List<Venta> listaV = getEntityManager().createQuery(cq).getResultList();
+
+        return listaV;
+    }
+    
 }
