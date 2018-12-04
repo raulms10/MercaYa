@@ -7,11 +7,17 @@ package co.edu.udea.mercaya.logica;
 
 import co.edu.udea.mercaya.model.Detalle;
 import co.edu.udea.mercaya.model.DetallePK;
+import co.edu.udea.mercaya.model.Detalle_;
+import co.edu.udea.mercaya.model.Producto;
+import co.edu.udea.mercaya.model.Venta;
+import co.edu.udea.mercaya.model.Venta_;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 /**
@@ -37,11 +43,13 @@ public class DetalleFacade extends AbstractFacade<Detalle> implements DetalleFac
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder(); 
         javax.persistence.criteria.CriteriaQuery cq = cb.createQuery();
         //Definimos de donde vamos a sacar los datos (FROM ontactos)
-        Root rootTable = cq.from(Detalle.class);
+        Root<Detalle> detalleTable = cq.from(Detalle.class);
+        Join<Detalle, Producto> productoTable = detalleTable.join(Detalle_.producto1);
+        Join<Detalle, Venta> ventaTable = detalleTable.join(Detalle_.venta1);
         System.out.println("gaghashgsahsahgashagshagha");
-        cq.select(rootTable)
-                //Aplicamos el filtro para sólo traer los activos (WHERE estado = '1')
-                .where(cb.equal(rootTable.get("venta"), factura));
+        cq.where(cb.equal(ventaTable.get(Venta_.factura), factura));
+        cq.select(detalleTable).distinct(true);
+                
         List<Detalle> listaV = getEntityManager().createQuery(cq).getResultList();
 
         return listaV;
