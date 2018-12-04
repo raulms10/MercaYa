@@ -62,9 +62,14 @@ public class Venta implements Serializable {
     private double total;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "TOTALDESC")
+    private double totalDesc;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 30)
     @Column(name = "CAJERO")
     private String cajero;
+    
     @Size(max = 12)
     @Column(name = "TIPOPAGO")
     private String tipopago;
@@ -112,6 +117,14 @@ public class Venta implements Serializable {
 
     public double getTotal() {
         return total;
+    }
+
+    public double getTotalDesc() {
+        return totalDesc;
+    }
+
+    public void setTotalDesc(double totalDesc) {
+        this.totalDesc = totalDesc;
     }
 
     public void setTotal(double total) {

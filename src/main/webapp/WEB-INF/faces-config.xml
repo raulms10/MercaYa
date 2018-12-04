@@ -12,6 +12,13 @@
     <navigation-rule>
         <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
+            <from-outcome>toShop</from-outcome>
+            <to-view-id>/shop.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
             <from-outcome>goList</from-outcome>
             <to-view-id>/list.xhtml</to-view-id>
         </navigation-case>

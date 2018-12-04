@@ -1,0 +1,48 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Author     : Raul Martínez
+*/
+
+.text {
+    color:white;
+    font-weight:bold
+}
+
+.text2 {
+    color:green;
+    font-weight:bold
+}
+
+body{
+    background-color: #85afd4;
+    background-image: url('../img/fondo.jpg');
+    background-position: center top;
+    background-repeat: no-repeat
+}
+
+.panelAdd{
+    width: 50%;
+    background-color: #c8d6e1;
+    background-color: rgba(255,255,255,0.66);
+    border-radius: 20px;
+    padding: 60px 20px 20px 20px;
+    margin: 0;
+    box-shadow: rgba(0,0,0,0.25) -4px 4px 6px 2px;
+    max-width: 600px;
+    min-width: 250px;
+}
+
+.botones{
+    background-color: #00783e;
+    color: #fff;
+    border-radius: 8px;
+    padding: 5px 0.5%;
+    border: none;
+    background: #00884a
+}
+
+

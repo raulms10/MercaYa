@@ -30,4 +30,6 @@ public interface VentaFacadeLocal {
 
     int count();
     
+    Integer lastIdInsert();
+    
 }

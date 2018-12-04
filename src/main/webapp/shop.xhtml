@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title><h:outputText value="Agregar"/></title>
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+    </h:head>
+    <h:body onload="#{facturaBean.buscarProductos()}">
+        <div align="center">
+            <h1><h:outputText value="Agregar Persona"/></h1>
+            <p><h:outputText value="Si desea agregar a alguien a su Lista de Contactos debe completar el formaulario y pulsar el botón 'Registrar'"/></p>
+
+            <h:form prependId="false" >
+                <p:growl id="growl" showDetail="true" />
+                <p:panel styleClass="panelAdd">
+                    <div align="left">
+                        <h:panelGrid columns="1">
+                            <h:outputLabel for="listProd" value="Lista de productos" style="font-weight:bold"/>
+                            <p:selectOneMenu id="listProd" value="#{facturaBean.selectedProduct.codigo}"
+                                             required="true" requiredMessage="Debe seleccionar el producto a comprar">
+                                <f:selectItem itemLabel="Seleccione producto" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{facturaBean.listProduct}" var="prod" itemLabel="#{prod.nombre} - $ #{prod.valorunitario} - IVA: #{prod.iva} %" itemValue="#{prod.codigo}"/>
+                            </p:selectOneMenu>
+                            <p:tooltip id="toolTipProd" for="listProd" value="Nombre - Valor unitario - IVA" position="top"/>
+                        </h:panelGrid>
+                        
+                        <h:panelGrid id="grid" columns="2" >
+                            <h:panelGrid columns="1">
+                                <h:outputLabel for="cantidad" value="Cantidad: " style="font-weight:bold"/>
+                                <p:inputText id="cantidad" label="Cantidad" value="#{facturaBean.cantidad}" required="false" placeholder="Número de productos">
+                                    <f:attribute name="requiredMessage" value="Por favor digite la cantidad del producto a comprar"/>
+                                </p:inputText>
+                                <p:message for="cantidad" />
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="1">
+                                <h:outputLabel for="descuento" value="Descuento: " style="font-weight:bold"/>
+                                <p:inputText id="descuento" label="Descuento" value="#{facturaBean.descuento}" required="false" placeholder="Porcentaje de descuento">
+                                    <f:attribute name="requiredMessage" value="Por favor digite el descuento del producto a comprar" />
+                                </p:inputText>
+                                <p:message for="descuento" />
+                            </h:panelGrid>
+                            <h:outputLabel></h:outputLabel>                        
+                        </h:panelGrid>
+                    </div>
+                    <div align="right">
+                        <p:commandButton styleClass="botones" update="@form" id="btnAddProduct" value="Añadir al carrito" 
+                                     validateClient="false" actionListener="#{facturaBean.agregarProducto()}" icon="ui-icon-home" />
+                    </div>
+                    
+                    <div align="left">
+                        <h:outputLabel value="Carrito de compras" style="font-weight:bold"/>
+                    </div>
+                    <div align="center">
+                        <p:dataTable selection="#{facturaBean.listSelectedProducts}" rowKey="#{producto.codigo}" var="producto" 
+                                     value="#{facturaBean.listProductToShop}" id="productosTable" 
+                                     emptyMessage="No hay productos en el carrito de compras" paginator="true" 
+                                     rows="8" paginatorAlwaysVisible="true">
+                            <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                            <p:column headerText="Cantidad">
+                                <h:outputText value="#{producto.cantidad}" />                    
+                            </p:column>
+
+                            <p:column headerText="Nombre" sortBy="#{producto.nombre}">
+                                <h:outputText value="#{producto.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="Valor unitario">
+                                <h:outputText value="#{producto.valorunitario}" />
+                            </p:column>
+
+                            <p:column headerText="IVA">
+                                <h:outputText value="#{producto.iva} %" />
+                            </p:column>}
+
+                            <p:column headerText="Descuento">
+                                <h:outputText value="#{producto.descuento}" />
+                            </p:column>
+
+                            <f:facet name="footer">
+                                <p:commandButton  disabled="true" styleClass="botones" process="productosTable" update="@form" icon="ui-icon-close" validateClient="false" value="Eliminar" actionListener="#{facturaBean.borrarProducto()}" >
+                                    <p:confirm header="Se eliminarán los productos seleccionados" message="Desea continuar?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </f:facet>
+
+                        </p:dataTable>
+                    </div>
+                    <div>
+                        <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                            <p:outputLabel for="tipopago" value="Tipo de pago:" />
+                            <p:selectOneRadio id="tipopago" value="#{facturaBean.tipoPago}" required="true"
+                                requiredMessage="Debe seleccionar el tipo de Pago">
+                                <f:selectItem itemLabel="Efectivo" itemValue="Efectivo" />
+                                <f:selectItem itemLabel="Tarjeta de Crédito" itemValue="Tarjeta de Crédito" />
+                            </p:selectOneRadio>
+                        </h:panelGrid>
+                    </div>
+                    <div align="right">
+                        <p:commandButton styleClass="botones" id="btnShop" update="@form" value="Comprar" validateClient="false" actionListener="#{facturaBean.comprarProductos()}" icon="ui-icon-disk" />
+                    </div>
+                </p:panel>
+            </h:form>
+            <h:form prependId="false" >
+                <div align="center">
+                    <p:commandButton styleClass="botones" id="btnHome_Add" value="Regresar" validateClient="false" action="goHome" icon="ui-icon-home" />
+                    <p:commandButton styleClass="botones" id="btnList_Add" value="Consultar Personas" validateClient="false" actionListener="#{facturaBean.buscarProductos()}" action="goList" icon="ui-icon-search" />
+                </div>
+            </h:form>
+            <p><h:outputText styleClass="text" value="Universidad de Antioquia"/></p>
+        </div>
+    </h:body>
+</html>
+

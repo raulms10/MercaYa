@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -61,6 +62,11 @@ public class Producto implements Serializable {
     private String letra;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto1")
     private Collection<Detalle> detalleCollection;
+    
+    @Transient
+    private BigDecimal descuento;
+    @Transient
+    private Integer cantidad;
 
     public Producto() {
     }
@@ -73,6 +79,30 @@ public class Producto implements Serializable {
         this.codigo = codigo;
         this.valorunitario = valorunitario;
         this.iva = iva;
+    }
+
+    public Producto(Integer codigo, double valorunitario, BigDecimal iva, String nombre, String letra, Collection<Detalle> detalleCollection, BigDecimal descuento, Integer cantidad) {
+        this.codigo = codigo;
+        this.valorunitario = valorunitario;
+        this.iva = iva;
+        this.nombre = nombre;
+        this.letra = letra;
+        this.detalleCollection = detalleCollection;
+        this.descuento = descuento;
+        this.cantidad = cantidad;
+    }
+            
+    public Producto(Integer codigo, double valorunitario, BigDecimal iva, String nombre, String letra) {
+        this.codigo = codigo;
+        this.valorunitario = valorunitario;
+        this.iva = iva;
+        this.nombre = nombre;
+        this.letra = letra;
+    }
+    
+    public Producto newObject(){
+        Producto p = new Producto(codigo, valorunitario, iva, nombre, letra, detalleCollection, descuento, cantidad);
+        return p;
     }
 
     public Integer getCodigo() {
@@ -123,6 +153,23 @@ public class Producto implements Serializable {
     public void setDetalleCollection(Collection<Detalle> detalleCollection) {
         this.detalleCollection = detalleCollection;
     }
+
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+    
 
     @Override
     public int hashCode() {
